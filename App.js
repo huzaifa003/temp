@@ -92,6 +92,12 @@ export default function App() {
    * Edits the price of the items in the data array based on the input value and greater than toggle.
    */
   const edit = () => {
+    if (value === '') {
+      return;
+    }
+    if (newPrice === '') {
+      return;
+    }
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
       console.log(parseInt(value));
@@ -127,6 +133,15 @@ export default function App() {
     setGreaterThan(!greaterThan);
   };
 
+  /**
+   * Reverts the data to the original tempData state.
+   */
+  const revert = () => {
+    set(ref(database, "bunty/burgers/"), tempData);
+    changeData(tempData);
+    setRerender(!rerender);
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.container}>
@@ -152,6 +167,7 @@ export default function App() {
               onChangeText={setNewPrice}
               value={newPrice}
             />
+            <Button title="Revert" onPress={revert} />
           </View>
           <FlatList
             data={data}
